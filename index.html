@@ -109,7 +109,9 @@
           $scope.dataSources.push({
             name: dataSource,
             help: "api." + dataSource + "()",
-            example: api[dataSource]
+            example: function () {
+              api[dataSource]($scope.stateParams.taskGraphUri)
+            }
           });
         });
         dataSourceWithItemUri.forEach(function (dataSource) {
@@ -117,7 +119,7 @@
             name: dataSource,
             help: "api." + dataSource + "(itemUri)",
             example: function () {
-              return api[dataSource]($scope.stateParams.itemUri)
+              return api[dataSource]($scope.stateParams.taskGraphUri, $scope.stateParams.itemUri)
             }
           });
         });
