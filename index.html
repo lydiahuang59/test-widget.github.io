@@ -92,6 +92,16 @@
         $scope.$apply();
       });
 
+      $scope.getValueForProperty = function(propertyURI) {
+        api["getMetadataForDomain"]($scope.stateParams.taskGraphUri, propertyURI).then(function success (results) {
+          $scope.data["propertyResult"] = JSON.decycle(results);
+          $scope.$apply();
+        }, function error (reason) {
+          $scope.data["propertyError"] = JSON.decycle(reason);
+          $scope.$apply();
+        });
+      }
+
       function prepareDataSources () {
 
 
@@ -336,6 +346,25 @@
         </div>
 
 
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingFive">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+          Test demo
+        </a>
+      </h4>
+    </div>
+    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+      <div class="panel-body">
+          <h3>Get Property</h3>
+          <input type="text" ng-model="propertyURI" placeholder="property uri">
+          <button class="btn btn-primary btn-xs" ng-click="getValueForProperty(propertyURI)">load real data</button>
+          <pre ng-if="data['propertyResults']" style="max-height: 250px;" class="bg-success">{{ data["propertyResults"] | json }}</pre>
+          <pre ng-if="data['propertyError']" class="bg-danger">{{ data["propertyError"]  | json}}</pre>
+        
       </div>
     </div>
   </div>
