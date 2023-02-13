@@ -84,12 +84,6 @@
         var params = Array.prototype.slice.call(arguments, 1);
         api.actions[name].apply(this, params);
       };
-      $scope.callActionTwice = function () {
-        var name = arguments[0];
-        var params = Array.prototype.slice.call(arguments, 1);
-        api.actions[name].apply(this, params);
-        api.actions[name].apply(this, params);
-      };
 
       $scope.getCurrentTaskUri().then(function (stateParams) {
         $scope.stateParams = stateParams;
@@ -314,7 +308,7 @@
           <input type="text" ng-model="altLabelName" placeholder="name">
           <input type="text" ng-model="altLabelLang" placeholder="lang code">
           <input type="text" ng-model="altTypeUri" placeholder="type uri">
-          <button id="showFormAddAltLabel" ng-click="callActionTwice('showFormAddAltLabel', altLabelName, altLabelLang, altTypeUri, true)" class="btn btn-xs">open
+          <button id="showFormAddAltLabel" ng-click="callAction('showFormAddAltLabel', altLabelName, altLabelLang, altTypeUri, true); callAction('showFormAddAltLabel', 'testing2', altLabelLang, altTypeUri, true);" class="btn btn-xs">open
           </button>
         </div>
         <div>
