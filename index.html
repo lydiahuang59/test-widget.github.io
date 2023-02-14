@@ -113,8 +113,18 @@
           $scope.fetchInitialData();
           $scope.$apply();
         });
+        $scope.checkForErrorsInMetadata = function() {
+          api
+            .getDetailsWithMetadata($scope.stateParams.taskGraphUri,$scope.stateParams.itemUri)
+            .then(function (results) {
+              console.info(results)
+              console.info(results["https://ontology.etsycorp.com/Listing/metadata#isAttributeAbstract"])
+            });
+
+        }
         api.addEventListener("CONCEPT_UPDATED", function (data) {
           $scope.data["validationResults"] = Semaphore.decycle(data);
+          $scope.checkForErrorsInMetadata()
           $scope.$apply();
         });
 
