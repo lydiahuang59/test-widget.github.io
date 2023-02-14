@@ -113,10 +113,12 @@
               if(results[propertyURI]) {
                 $scope.data["propertyResults"] = results[propertyURI]
               }
+              $scope.$apply();
             });
         }
         $scope.addScaleRelationshipTo = function(targetURI) {
-          api.showFormAddRelated("https://ontology.etsycorp.com/Inventory/relationship#attributeHasDefaultScale", targetURI, "", true)
+          api.showFormAddRelated("https://ontology.etsycorp.com/Inventory/relationship#attributeHasDefaultScale", targetURI, "", true);
+          $scope.$apply();
         }
 
         $scope.getCurrentTaskUri().then(function (stateParams) {
@@ -131,13 +133,15 @@
             .then(function (results) {
               if(results["https://ontology.etsycorp.com/Listing/metadata#isAttributeAbstract"] == "true") {
                 $scope.data["validationResults"] = "ERROR: Attribute is abstract"
+              } else {
+                $scope.data["validationResults"] = null
               }
+              $scope.$apply();
             });
 
         }
         api.addEventListener("CONCEPT_UPDATED", function (data) {
           $scope.checkForErrorsInMetadata()
-          $scope.$apply();
         });
 
         function prepareDataSources() {
@@ -418,7 +422,7 @@
               <h3>Get Metadata field</h3>
               <input type="text" ng-model="propertyURI" placeholder="field URI">
               <button class="btn btn-primary btn-xs" ng-click="getValueForProperty(propertyURI)">load real data</button>
-              <pre ng-if="data['propertyResults']" style="max-height: 250px;" class="bg-success">{{ data["propertyResults"] | json }}</pre>
+              <pre ng-if="data['propertyResults']" style="max-height: 250px;">{{ data["propertyResults"] | json }}</pre>
               <pre ng-if="data['propertyError']" class="bg-danger">{{ data["propertyError"]  | json}}</pre>
             </div>
             <div>
@@ -426,7 +430,7 @@
               <pre ng-if="data['validationResults']" style="max-height: 250px;" class="bg-danger">{{ data["validationResults"] | json }}</pre>
             </div>
             <div>
-              <h2>Add Scale Relationship to</h2>
+              <h3>Add Scale Relationship to</h3>
               <input type="text" ng-model="targetUri" placeholder="target uri">
               <button id="showAddScaleRelationshipTo" ng-click="addScaleRelationship(targetUri)" class="btn btn-xs">
                 Add
