@@ -118,13 +118,6 @@
           var config = {
               showLoadingOverlay: false,
             },
-            dataSourceWitNoParameters = [
-              "getClasses",
-              "getAssociativeUnfilteredTypes",
-              "getBroaderUnfilteredTypes",
-              "getNarrowerUnfilteredTypes",
-              "getSemaphoreSettings",
-            ],
             dataSourceWithItemUri = [
               "getAssociativeTypes",
               "getAltLabelProperties",
@@ -149,19 +142,12 @@
               "getTopConcepts",
             ];
           $scope.dataSources = [];
-          dataSourceWitNoParameters.forEach(function (dataSource) {
-            $scope.dataSources.push({
-              name: dataSource,
-              help: "api." + dataSource + "()",
-              example: api[dataSource],
-            });
-          });
           dataSourceWithItemUri.forEach(function (dataSource) {
             $scope.dataSources.push({
               name: dataSource,
               help: "api." + dataSource + "(itemUri)",
               example: function () {
-                return api[dataSource]($scope.stateParams.itemUri);
+                return api[dataSource]($scope.stateParams.taskGraphUri, $scope.stateParams.itemUri);
               },
             });
           });
@@ -319,14 +305,6 @@
               </button>
             </div>
             <hr>
-
-            <button ng-click="openWidget('http://myCompany.com/#WidgetWikipedia')" class="btn btn-xs">
-              Open widget 'Wikipedia'
-            </button>
-
-            <button ng-click="closeWidget()" class="btn btn-xs">
-              Close widget
-            </button>
             <hr>
           </div>
         </div>
