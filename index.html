@@ -117,7 +117,7 @@
             });
         }
         $scope.addScaleRelationshipTo = function(targetURI) {
-          api.showFormAddRelated("https://ontology.etsycorp.com/Inventory/relationship#attributeHasDefaultScale", targetURI, "", true);
+          api.showFormAddRelated("https://ontology.etsycorp.com/Listing/relationship#DiscreteScaleAttributeHasScale", targetURI, "", true);
           $scope.$apply();
         }
 
@@ -421,7 +421,7 @@
             <div>
               <h3>Get Metadata field</h3>
               <input type="text" ng-model="propertyURI" placeholder="field URI">
-              <button class="btn btn-primary btn-xs" ng-click="getValueForProperty(propertyURI)">load real data</button>
+              <button class="btn btn-primary btn-xs" ng-click="getValueForProperty(propertyURI)">load data</button>
               <pre ng-if="data['propertyResults']" style="max-height: 250px;">{{ data["propertyResults"] | json }}</pre>
               <pre ng-if="data['propertyError']" class="bg-danger">{{ data["propertyError"]  | json}}</pre>
             </div>
