@@ -113,6 +113,10 @@
           $scope.fetchInitialData();
           $scope.$apply();
         });
+        api.addEventListener("CONCEPT_UPDATED", function (data) {
+          $scope.data["validationResults"] = JSON.decycle(data);
+          $scope.$apply();
+        });
 
         function prepareDataSources() {
           var config = {
@@ -374,6 +378,32 @@
               <button id="showFormAddNarrower" ng-click="callAction('showFormAddNarrower', narrowerTypeUri, narrowerTargetUri, narrowerTargetName)" class="btn btn-xs">
                 open
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFive">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+              Test demo
+            </a>
+          </h4>
+        </div>
+        <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+          <div class="panel-body">
+            <div>
+              <h3>Get Property</h3>
+              <input type="text" ng-model="propertyURI" placeholder="property uri">
+              <button class="btn btn-primary btn-xs" ng-click="getValueForProperty(propertyURI)">load real data</button>
+              <pre ng-if="data['propertyResults']" style="max-height: 250px;" class="bg-success">{{ data["propertyResults"] | json }}</pre>
+              <pre ng-if="data['propertyError']" class="bg-danger">{{ data["propertyError"]  | json}}</pre>
+            </div>
+            <div>
+              <div class="panel-body">
+                <h3>Validation Errors</h3>
+                <pre ng-if="data['validationResults']" style="max-height: 250px;" class="bg-success">{{ data["propertyResults"] | json }}</pre>
+              
             </div>
           </div>
         </div>
