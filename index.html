@@ -107,14 +107,17 @@
           api.actions[name].apply(this, params);
         };
         $scope.getValueForProperty = function(propertyURI) {
-        api["getMetadataForDomain"]($scope.stateParams.taskGraphUri, propertyURI).then(function success (results) {
-          $scope.data["propertyResults"] = JSON.decycle(results);
-          $scope.$apply();
-        }, function error (reason) {
-          $scope.data["propertyError"] = JSON.decycle(reason);
-          $scope.$apply();
-        });
-      }
+          api
+            .getDetailsWithMetadata($scope.stateParams.taskGraphUri,$scope.stateParams.itemUri)
+            .then(function (results) {
+              if(results[propertyURI]) {
+                $scope.data["propertyResults"] = results[propertyURI]
+              }
+            });
+        }
+        $scope.addScaleRelationshipTo = function(targetURI) {
+          api.showFormAddRelated("https://ontology.etsycorp.com/Inventory/relationship#attributeHasDefaultScale", targetURI, "", true)
+        }
 
         $scope.getCurrentTaskUri().then(function (stateParams) {
           $scope.stateParams = stateParams;
@@ -126,7 +129,7 @@
           api
             .getDetailsWithMetadata($scope.stateParams.taskGraphUri,$scope.stateParams.itemUri)
             .then(function (results) {
-              if(results["https://ontology.etsycorp.com/Listing/metadata#isAttributeAbstract"]) {
+              if(results["https://ontology.etsycorp.com/Listing/metadata#isAttributeAbstract"] == "true") {
                 $scope.data["validationResults"] = "ERROR: Attribute is abstract"
               }
             });
@@ -412,8 +415,8 @@
         <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
           <div class="panel-body">
             <div>
-              <h3>Get Property</h3>
-              <input type="text" ng-model="propertyURI" placeholder="property uri">
+              <h3>Get Metadata field</h3>
+              <input type="text" ng-model="propertyURI" placeholder="field URI">
               <button class="btn btn-primary btn-xs" ng-click="getValueForProperty(propertyURI)">load real data</button>
               <pre ng-if="data['propertyResults']" style="max-height: 250px;" class="bg-success">{{ data["propertyResults"] | json }}</pre>
               <pre ng-if="data['propertyError']" class="bg-danger">{{ data["propertyError"]  | json}}</pre>
@@ -421,6 +424,13 @@
             <div>
               <h3>Validation Errors</h3>
               <pre ng-if="data['validationResults']" style="max-height: 250px;" class="bg-danger">{{ data["validationResults"] | json }}</pre>
+            </div>
+            <div>
+              <h2>Add Scale Relationship to</h2>
+              <input type="text" ng-model="targetUri" placeholder="target uri">
+              <button id="showAddScaleRelationshipTo" ng-click="addScaleRelationship(targetUri)" class="btn btn-xs">
+                Add
+              </button>
             </div>
           </div>
         </div>
