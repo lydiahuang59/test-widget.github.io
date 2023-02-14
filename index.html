@@ -106,6 +106,15 @@
           var params = Array.prototype.slice.call(arguments, 1);
           api.actions[name].apply(this, params);
         };
+        $scope.getValueForProperty = function(propertyURI) {
+        api["getMetadataForDomain"]($scope.stateParams.taskGraphUri, propertyURI).then(function success (results) {
+          $scope.data["propertyResults"] = JSON.decycle(results);
+          $scope.$apply();
+        }, function error (reason) {
+          $scope.data["propertyError"] = JSON.decycle(reason);
+          $scope.$apply();
+        });
+      }
 
         $scope.getCurrentTaskUri().then(function (stateParams) {
           $scope.stateParams = stateParams;
@@ -117,13 +126,13 @@
           api
             .getDetailsWithMetadata($scope.stateParams.taskGraphUri,$scope.stateParams.itemUri)
             .then(function (results) {
-              console.info(results)
-              console.info(results["https://ontology.etsycorp.com/Listing/metadata#isAttributeAbstract"])
+              if(results["https://ontology.etsycorp.com/Listing/metadata#isAttributeAbstract"]) {
+                $scope.data["validationResults"] = "ERROR: Attribute is abstract"
+              }
             });
 
         }
         api.addEventListener("CONCEPT_UPDATED", function (data) {
-          $scope.data["validationResults"] = Semaphore.decycle(data);
           $scope.checkForErrorsInMetadata()
           $scope.$apply();
         });
@@ -411,7 +420,7 @@
             </div>
             <div>
               <h3>Validation Errors</h3>
-              <pre ng-if="data['validationResults']" style="max-height: 250px;" class="bg-success">{{ data["validationResults"] | json }}</pre>
+              <pre ng-if="data['validationResults']" style="max-height: 250px;" class="bg-danger">{{ data["validationResults"] | json }}</pre>
             </div>
           </div>
         </div>
