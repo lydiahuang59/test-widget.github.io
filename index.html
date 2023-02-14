@@ -117,8 +117,7 @@
             });
         }
         $scope.addScaleRelationshipTo = function(targetURI) {
-          api.showFormAddRelated("https://ontology.etsycorp.com/Listing/relationship#DiscreteScaleAttributeHasScale", targetURI, "", true);
-          $scope.$apply();
+          api.actions["showFormAddRelated"].apply(this, ["https://ontology.etsycorp.com/Listing/relationship#DiscreteScaleAttributeHasScale", targetURI, "", true]);
         }
 
         $scope.getCurrentTaskUri().then(function (stateParams) {
